@@ -1,0 +1,52 @@
+import java.io.*;
+import java.util.*;
+
+public class Template {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+
+        // Begin Parsing Input
+
+        BufferedReader inputReader = 
+            submission ? 
+                (recent ? 
+                    new BufferedReader(new InputStreamReader(System.in)) : 
+                    new BufferedReader(new FileReader(problemName + ".in"))) : 
+                new BufferedReader(new FileReader("problemdata\\input.txt"));
+
+        StringTokenizer line = new StringTokenizer(inputReader.readLine()); // need to do this for every single line
+        int n = Integer.parseInt(line.nextToken()); // number of cows
+        int m = Integer.parseInt(line.nextToken()); // number of pairs
+
+        for (int i = 0; i < m; i += 1) {
+            line = new StringTokenizer(inputReader.readLine());
+            int first = Integer.parseInt(line.nextToken());
+            int second = Integer.parseInt(line.nextToken());
+        }
+
+        inputReader.close();
+
+        // Finish Parsing Input
+
+        // Begin Writing Output
+
+        BufferedWriter ouputWriter = 
+            submission ? 
+                (recent ? 
+                    new BufferedWriter(new OutputStreamWriter(System.out)) : 
+                    new BufferedWriter(new FileWriter(problemName + ".out"))) : 
+                new BufferedWriter(new FileWriter("problemdata\\output.txt"));
+
+        ouputWriter.write("HI!");
+        ouputWriter.newLine();
+
+        ouputWriter.close();
+
+        // Finish Writing Output
+
+    }
+
+    public static final String problemName = "Problem";
+    public static final boolean recent = true; // false if Open 2020 or before, true if December 2020 or after
+    public static final boolean submission = false;
+}
