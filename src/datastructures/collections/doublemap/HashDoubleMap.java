@@ -1,4 +1,4 @@
-package datastructures.doublemap;
+package datastructures.collections.doublemap;
 
 import java.util.HashMap;
 

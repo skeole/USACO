@@ -104,7 +104,7 @@ public class VisualizeTree {
         return sb.toString();
     }
 
-    public static <E> String stringOfTree(E rootNode, G2G<E, List<E>> toChildren, G2G<E, String> stringOfNode, int neighborSpace) {
+    public static <E> String stringOfTree(E rootNode, G2G<E, Iterable<E>> toChildren, G2G<E, String> stringOfNode, int neighborSpace) {
         if (rootNode == null) {
             return "Empty Tree";
         }
@@ -129,7 +129,7 @@ public class VisualizeTree {
             }
             ArrayList<OrderedTuple<E, Integer>> currentRow = table.get(level);
             currentRow.add(new OrderedTuple<>(currentNode, parent));
-            List<E> children = currentNode == null ? new LinkedList<>() : toChildren.function(currentNode);
+            Iterable<E> children = currentNode == null ? new LinkedList<>() : toChildren.function(currentNode);
             boolean yay = false;
             for (E child : children) {
                 if (child != null) {
