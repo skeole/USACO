@@ -46,6 +46,27 @@ public class Template {
 
     }
 
+    public static int modsum(int... numbers) { // for modprod need to convert to longs
+        int sum = 0;
+        int modulo = 1000000007; // 10^9 + 7
+        for (int number : numbers) {
+            if (number < 0) {
+                number += modulo;
+            }
+            if (number < 0) {
+                number += modulo;
+            }
+            if (number >= modulo) {
+                number -= modulo;
+            }
+            sum += number;
+            if (sum > modulo) {
+                sum -= modulo;
+            }
+        }
+        return sum;
+    }
+
     public static final String problemName = "Problem";
     public static final boolean recent = true; // false if Open 2020 or before, true if December 2020 or after
     public static final boolean submission = false;

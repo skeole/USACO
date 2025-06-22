@@ -352,7 +352,7 @@ public class UnionFind<E> {
                 }
                 dsu.assertDataMakesSense();
             }
-            for (int j = 0; j < dsu.ancestryMap.size(); j += 1) {
+            for (int j = dsu.ancestryMap.size(); j > 0; j -= 1) {
                 Integer[] arr = dsu.ancestryMap.keySet().toArray(new Integer[0]);
                 Integer toRemove = arr[Randomness.getRandomInteger(0, arr.length)];
                 dsu.delete(toRemove);
@@ -398,7 +398,7 @@ public class UnionFind<E> {
                 }
                 dsu.assertDataMakesSense();
             }
-            for (int j = 0; j < dsu.ancestryMap.size(); j += 1) {
+            for (int j = dsu.ancestryMap.size(); j > 0; j -= 1) {
                 Integer[] arr = dsu.ancestryMap.keySet().toArray(new Integer[0]);
                 Integer toRemove = arr[Randomness.getRandomInteger(0, arr.length)];
                 dsu.delete(toRemove);

@@ -1,4 +1,4 @@
-package datastructures.misc;
+package datastructures.collections.misc;
 
 public class BinaryIndexedTree {
     

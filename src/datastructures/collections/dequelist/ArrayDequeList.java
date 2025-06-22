@@ -325,7 +325,7 @@ public class ArrayDequeList<E> extends DequeList<E> {
                     throw new IllegalStateException("Arrays were inconsistent");
                 }
             }
-            for (int j = 0; j < testDeque.size(); j += 1) {
+            for (int j = testDeque.size(); j > 0; j -= 1) {
                 if (Randomness.chooseRandomly()) {
                     testDeque.removeFirst();
                     parallel.removeFirst();
@@ -405,7 +405,7 @@ public class ArrayDequeList<E> extends DequeList<E> {
                     }
                 }
             }
-            for (int j = 0; j < testDeque.size(); j += 1) {
+            for (int j = testDeque.size(); j > 0; j -= 1) {
                 if (Randomness.chooseRandomly()) {
                     testDeque.removeFirst();
                     parallel.removeFirst();

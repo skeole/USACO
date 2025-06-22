@@ -729,7 +729,7 @@ public class TreeDequeList<E> extends DequeList<E> { // apparently this is simil
                     throw new IllegalStateException("Arrays were inconsistent");
                 }
             }
-            for (int j = 0; j < testTree.size(); j += 1) {
+            for (int j = testTree.size(); j > 0; j -= 1) {
                 int toRemoveIndex = Randomness.getRandomInteger(0, testTree.size());
                 testTree.remove(toRemoveIndex);
                 parallel.remove(toRemoveIndex);
@@ -790,7 +790,7 @@ public class TreeDequeList<E> extends DequeList<E> { // apparently this is simil
                     }
                 }
             }
-            for (int j = 0; j < testTree.size(); j += 1) {
+            for (int j = testTree.size(); j > 0; j -= 1) {
                 int toRemoveIndex = Randomness.getRandomInteger(0, testTree.size());
                 testTree.remove(toRemoveIndex);
                 parallel.remove(toRemoveIndex);

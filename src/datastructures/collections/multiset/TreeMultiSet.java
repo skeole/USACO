@@ -682,7 +682,7 @@ public class TreeMultiSet<E> extends AbstractCollection<E> { // for multimap: ju
                     }
                 }
             }
-            for (int j = 0; j < testTree.size(); j += 1) {
+            for (int j = testTree.size(); j > 0; j -= 1) {
                 int toRemove = testTree.get(Randomness.getRandomInteger(0, testTree.size()));
                 testTree.remove(toRemove);
                 parallel.remove(toRemove);

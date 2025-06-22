@@ -1,5 +1,7 @@
-package datastructures.collections.dequelist;
+package datastructures.collections.doublemap;
 
+import datastructures.collections.dequelist.ArrayDequeList;
+import datastructures.collections.dequelist.TreeDequeList;
 import datastructures.collections.multiset.HashMultiSet;
 import datastructures.collections.multiset.TreeMultiSet;
 import datastructures.utility.OrderedTuple;
@@ -17,7 +19,7 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
     protected static class TreeMultiMapNode<K, V> implements Comparable<TreeMultiMapNode<K, V>> {
 
         private final K key;
-        private final TreeDequeList<V> values = new TreeDequeList<>();
+        private final TreeDequeList<V> values = new TreeDequeList<>(); // to make it a multiheap, can make V a wrapper for V, int
 
         private TreeMultiMapNode<K, V> leftChild;
         private TreeMultiMapNode<K, V> rightChild;
@@ -273,12 +275,12 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
 
     protected final Comparator<K> comparator;
 
-    protected TreeMultiMap() {
+    public TreeMultiMap() {
         comparator = null;
     }
 
     // Pass Class<T> to constructor?
-    protected TreeMultiMap(Map<? extends K, ? extends V> m) { // huh
+    public TreeMultiMap(Map<? extends K, ? extends V> m) { // huh
         comparator = null;
     }
 
@@ -1149,7 +1151,7 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
                     throw new IllegalStateException("Arrays were inconsistent");
                 }
             }
-            for (int j = 0; j < testTree.size(); j += 1) {
+            for (int j = testTree.size(); j > 0; j -= 1) {
                 int toRemoveIndex = Randomness.getRandomInteger(0, testTree.size());
                 int toRemove = parallel.get(toRemoveIndex);
                 Integer toRemove2 = testTree.get(toRemoveIndex);
@@ -1246,7 +1248,7 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
                     throw new IllegalStateException("Arrays were inconsistent");
                 }
             }
-            for (int j = 0; j < testTree.size(); j += 1) {
+            for (int j = testTree.size(); j > 0; j -= 1) {
                 int toRemoveIndex = Randomness.getRandomInteger(0, testTree.size());
                 int toRemove = parallel.get(toRemoveIndex);
                 Integer toRemove2 = testTree.get(toRemoveIndex);
@@ -1338,7 +1340,7 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
 
         testAddRemoveSame();
         testAddRemoveDifferent();
-        System.out.println("TreeMultiSet passed all tests :)"); // holy goated :D
+        System.out.println("TreeMultiMap passed all tests :)"); // holy goated :D
 
     }
 }
