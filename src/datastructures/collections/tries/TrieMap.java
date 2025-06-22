@@ -1,6 +1,5 @@
 package datastructures.collections.tries;
 
-import datastructures.collections.priorityqueue.ArrayPriorityQueue;
 import datastructures.utility.IterableUtility;
 import datastructures.utility.Randomness;
 import datastructures.utility.VisualizeTree;
@@ -67,14 +66,22 @@ public class TrieMap<K, V> {
             return fullArray;
         }
 
-        @Override
-        public String toString() {
+        public String visualization() {
             StringBuilder sb = new StringBuilder();
             for (K k : nodes) {
                 sb.append(k);
             }
             if (children.isEmpty()) {
                 sb.append(" : ").append(value);
+            }
+            return sb.toString();
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            for (K k : asArray()) {
+                sb.append(k);
             }
             return sb.toString();
         }
@@ -86,7 +93,7 @@ public class TrieMap<K, V> {
     }
 
     private final TrieMapNode<K, V> root = new TrieMapNode<>(null);
-    private final HashMap<V, TrieMapNode<K, V>> map = new HashMap<>();
+    private final HashMap<V, HashSet<TrieMapNode<K, V>>> backwardHashMap = new HashMap<>();
     private final K special;
 
     public int size() {
@@ -94,10 +101,6 @@ public class TrieMap<K, V> {
     }
 
     public void add(Iterable<K> sequence, V value) {
-
-        if (containsValue(value)) {
-            removeValue(value);
-        }
 
         int index = 0;
         Iterator<K> it = sequence.iterator();
@@ -175,15 +178,26 @@ public class TrieMap<K, V> {
             currentNode = addedNode;
 
         } else {
-            map.remove(currentNode.value);
+            backwardHashMap.get(currentNode.value).remove(currentNode);
+            if (backwardHashMap.get(currentNode.value).isEmpty()) {
+                backwardHashMap.remove(currentNode.value);
+            }
         }
         currentNode.value = value;
-        map.put(value, currentNode);
+
+        if (!backwardHashMap.containsKey(value)) {
+            backwardHashMap.put(value, new HashSet<>());
+        }
+        backwardHashMap.get(value).add(currentNode);
     }
 
     private TrieMapNode<K, V> removeNode(TrieMapNode<K, V> nodeToRemove) {
         TrieMapNode<K, V> currentNode = nodeToRemove;
-        map.remove(nodeToRemove.value);
+
+        backwardHashMap.get(nodeToRemove.value).remove(nodeToRemove);
+        if (backwardHashMap.get(nodeToRemove.value).isEmpty()) {
+            backwardHashMap.remove(nodeToRemove.value);
+        }
 
         while (currentNode != null) {
             currentNode.descendants.remove(nodeToRemove);
@@ -233,10 +247,6 @@ public class TrieMap<K, V> {
         }
 
         return removeNode(currentNode).value;
-    }
-
-    public Iterable<K> removeValue(V value) {
-        return removeNode(map.get(value)).asArray();
     }
 
     public boolean containsSequence(Iterable<K> sequence) {
@@ -308,7 +318,7 @@ public class TrieMap<K, V> {
     }
 
     public boolean containsValue(V value) {
-        return map.containsKey(value);
+        return backwardHashMap.containsKey(value);
     }
 
     public ArrayDeque<K> longestContainedPrefix(Iterable<K> sequence) {
@@ -734,18 +744,26 @@ public class TrieMap<K, V> {
         return allCloseValuesWithPrefix(asIterable(sequence), maxDifferences);
     }
 
+    public ArrayList<ArrayDeque<K>> allSequencesOfValue(V value) {
+        ArrayList<ArrayDeque<K>> asov = new ArrayList<>();
+        for (TrieMapNode<K, V> node : backwardHashMap.get(value)) {
+            asov.add(node.asArray());
+        }
+        return asov;
+    }
+
     public void clear() {
         root.children.clear();
         root.nodes.clear(); // root.nodes should always be blank though
         root.descendants.clear();
-        map.clear();
+        backwardHashMap.clear();
     }
 
     public static <K, V> TrieMap<K, V> buildSuffixTrieMap(K[] entry, K special) { // values --> starting index
         return null;
     }
 
-    private static <K, V> int bruteForceDescendants(TrieMapNode<K, V> x, HashMap<V, TrieMapNode<K, V>> map) {
+    private static <K, V> int bruteForceDescendants(TrieMapNode<K, V> x, HashMap<V, HashSet<TrieMapNode<K, V>>> map) {
 
         if (x.parent != null) {
             if (!x.parent.children.get(x.nodes.getFirst()).equals(x)) {
@@ -790,13 +808,15 @@ public class TrieMap<K, V> {
     }
 
     private void assertDataMakesSense() {
-        bruteForceDescendants(root, map);
-        for (V value : map.keySet()) {
-            if (!valueOfSequence(map.get(value).asArray()).equals(value)) {
-                throw new IllegalStateException("map not working");
-            }
-            if (!map.get(value).children.isEmpty()) {
-                throw new IllegalStateException("map shouldn't map to non-leaf nodes");
+        bruteForceDescendants(root, backwardHashMap);
+        for (V value : backwardHashMap.keySet()) {
+            for (TrieMapNode<K, V> node : backwardHashMap.get(value)) {
+                if (!valueOfSequence(node.asArray()).equals(value)) {
+                    throw new IllegalStateException("map not working");
+                }
+                if (!node.children.isEmpty()) {
+                    throw new IllegalStateException("map shouldn't map to non-leaf nodes");
+                }
             }
         }
     }
@@ -909,9 +929,9 @@ public class TrieMap<K, V> {
         return VisualizeTree.stringOfTree(
                 root,
                 x -> x.children.values(),
-                x -> x == root ? "TrieMap" : x.toString(),
+                x -> x == root ? "TrieMap" : x.visualization(),
                 2
-        );
+        ) + '\n' + backwardHashMap;
     }
 
     public static void main(String[] args) {
@@ -946,11 +966,17 @@ public class TrieMap<K, V> {
 
         TrieMap<Character, Integer> trie = new TrieMap<>('$');
 
-        int i = 0;
         for (String sequence : sequences) {
-            trie.add(IterableUtility.asIterable(sequence), i);
-            i += 1;
+            int differences = 0;
+            for (int i = 0; i < sequence.length(); i += 1) {
+                if (target.charAt(i) != sequence.charAt(i)) {
+                    differences += 1;
+                }
+            }
+            trie.add(IterableUtility.asIterable(sequence), differences);
         }
+
+        System.out.println(trie.visualization());
 
         System.out.println(trie.allCloseSequencesWithPrefix(asIterable("$CGT".toCharArray()), 1));
         System.out.println(trie.allCloseValuesWithPrefix(asIterable("$CGT".toCharArray()), 1));

@@ -74,7 +74,7 @@ public class BovineGenetics { // 2020 December Gold 2
         What is the integer stored at each state? the number of sequences that could have led to a thing ENDING at the
             encoded value */
 
-        int[][][][] dp = new int[genome.length][4][4][4];
+        int[][][] dp = new int[4][4][4];
             // current ending character, next ending character, previous character
                 // previous character important for wild card purposes lol
 
@@ -83,17 +83,18 @@ public class BovineGenetics { // 2020 December Gold 2
         if (genomeIntegers[0] == 4) {
             for (int wcValue = 0; wcValue < 4; wcValue += 1) {
                 for (int endingChar = 0; endingChar < 4; endingChar += 1) {
-                    dp[0][endingChar][wcValue][wcValue] = 1;
+                    dp[endingChar][wcValue][wcValue] = 1;
                 }
             }
         } else {
             for (int endingChar = 0; endingChar < 4; endingChar += 1) {
-                dp[0][endingChar][genomeIntegers[0]][genomeIntegers[0]] = 1;
+                dp[endingChar][genomeIntegers[0]][genomeIntegers[0]] = 1;
             }
         }
 
         for (int index = 1; index < genome.length; index += 1) {
             int currentChar = genomeIntegers[index];
+            int[][][] dpNext = new int[4][4][4];
 
             for (int endingChar = 0; endingChar < 4; endingChar += 1) {
                 for (int nextEndingChar = 0; nextEndingChar < 4; nextEndingChar += 1) {
@@ -101,14 +102,14 @@ public class BovineGenetics { // 2020 December Gold 2
                         if (previousChar == endingChar) { // simulate ending previously
                             if (currentChar == 4) {
                                 for (int wcValue = 0; wcValue < 4; wcValue += 1) {
-                                    dp[index][nextEndingChar][wcValue][wcValue] = modsum(
-                                            dp[index][nextEndingChar][wcValue][wcValue],
-                                            dp[index - 1][endingChar][nextEndingChar][previousChar]);
+                                    dpNext[nextEndingChar][wcValue][wcValue] = modsum(
+                                            dpNext[nextEndingChar][wcValue][wcValue],
+                                            dp[endingChar][nextEndingChar][previousChar]);
                                 }
                             } else {
-                                dp[index][nextEndingChar][currentChar][currentChar] = modsum(
-                                        dp[index][nextEndingChar][currentChar][currentChar],
-                                        dp[index - 1][endingChar][nextEndingChar][previousChar]);
+                                dpNext[nextEndingChar][currentChar][currentChar] = modsum(
+                                        dpNext[nextEndingChar][currentChar][currentChar],
+                                        dp[endingChar][nextEndingChar][previousChar]);
                             }
                         }
 
@@ -117,24 +118,26 @@ public class BovineGenetics { // 2020 December Gold 2
                                 if (wcValue == previousChar) {
                                     continue;
                                 }
-                                dp[index][endingChar][nextEndingChar][wcValue] = modsum(
-                                        dp[index][endingChar][nextEndingChar][wcValue],
-                                        dp[index - 1][endingChar][nextEndingChar][previousChar]);
+                                dpNext[endingChar][nextEndingChar][wcValue] = modsum(
+                                        dpNext[endingChar][nextEndingChar][wcValue],
+                                        dp[endingChar][nextEndingChar][previousChar]);
                             }
                         } else if (currentChar != previousChar) {
-                            dp[index][endingChar][nextEndingChar][currentChar] = modsum(
-                                    dp[index][endingChar][nextEndingChar][currentChar],
-                                    dp[index - 1][endingChar][nextEndingChar][previousChar]);
+                            dpNext[endingChar][nextEndingChar][currentChar] = modsum(
+                                    dpNext[endingChar][nextEndingChar][currentChar],
+                                    dp[endingChar][nextEndingChar][previousChar]);
                         }
                     }
                 }
             }
+
+            dp = dpNext;
         }
 
         int result = 0;
         for (int endingChar = 0; endingChar < 4; endingChar += 1) {
             for (int nextEndingChar = 0; nextEndingChar < 4; nextEndingChar += 1) {
-                result = modsum(result, dp[genomeIntegers.length - 1][endingChar][nextEndingChar][endingChar]);
+                result = modsum(result, dp[endingChar][nextEndingChar][endingChar]);
             }
         }
 
