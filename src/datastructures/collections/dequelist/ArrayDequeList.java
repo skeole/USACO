@@ -10,7 +10,6 @@ public class ArrayDequeList<E> extends DequeList<E> {
     
     // backwardHashMap<E, TreeSet<Integer>>, but you need to cast each time
 
-    @SuppressWarnings("unchecked")
     E[] array = (E[]) new Object[MINIMUM_CAPACITY];
 
     public ArrayDequeList() {
@@ -73,7 +72,6 @@ public class ArrayDequeList<E> extends DequeList<E> {
 
     @Override
     protected void grow() {
-        @SuppressWarnings("unchecked")
         E[] arr = (E[]) new Object[2 * array.length]; // sigh
 
         for (int i = 0; i < size(); i += 1) {
@@ -92,7 +90,6 @@ public class ArrayDequeList<E> extends DequeList<E> {
             return;
         }
 
-        @SuppressWarnings("unchecked")
         E[] arr = (E[]) new Object[array.length / 2]; // sigh
 
         for (int i = 0; i < size(); i += 1) {
@@ -464,7 +461,7 @@ public class ArrayDequeList<E> extends DequeList<E> {
 
         ArrayDequeList<Integer> mainArray = new ArrayDequeList<>();
 
-        String s = mainArray.toString();
+        String s = mainArray.toString(); // used for debugging purposes
         for (int i = 0; i < 17; i += 1) {
             int toAdd = Randomness.getRandomInteger(0, 25);
             if (Randomness.getDouble() < 0.5) {
@@ -490,6 +487,8 @@ public class ArrayDequeList<E> extends DequeList<E> {
                 s = java.util.Arrays.toString(mainArray.array);
             }
         }
+
+        System.out.println(s);
         
         System.out.println(mainArray);
         System.out.println(mainArray.sort());

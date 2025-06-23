@@ -74,7 +74,6 @@ public class OrderedTuple<F, S> implements Map.Entry<F, S> { // can just chain p
         return ret;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         if (o == this) {

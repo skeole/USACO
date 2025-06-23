@@ -476,10 +476,6 @@ public class Trie<E> {
         return closeSequences;
     }
 
-    // TODO: support for wildcards
-    // TODO: double Trie (for prefix-suffix matching)
-    // TODO: Trie Map
-
     public void add(E[] sequence) {
         add(asIterable(sequence));
     }

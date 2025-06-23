@@ -338,7 +338,7 @@ public abstract class DequeList<E> extends AbstractCollection<E> implements Dequ
         throw new UnsupportedOperationException();
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
     public final void clear() {
         firstIndex = 0;
         lastIndex = 0;
@@ -348,7 +348,6 @@ public abstract class DequeList<E> extends AbstractCollection<E> implements Dequ
     
     @Override
     public final E[] toArray() {
-        @SuppressWarnings("unchecked")
         E[] arr = (E[]) new Object[size()]; // much more interesting imo
 
         int i = 0;

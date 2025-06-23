@@ -20,7 +20,6 @@ public class HashMultiSet<E> extends AbstractCollection<E> implements Set<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             final Iterator<E> keys = map.keySet().iterator();
-            boolean started = false;
             E current = null;
             int currentCounter = 0;
             int jumpCounter = 0;
@@ -48,7 +47,6 @@ public class HashMultiSet<E> extends AbstractCollection<E> implements Set<E> {
 
     @Override
     public final E[] toArray() {
-        @SuppressWarnings("unchecked")
         E[] arr = (E[]) new Object[size()]; // much more interesting imo
 
         int i = 0;
@@ -75,7 +73,6 @@ public class HashMultiSet<E> extends AbstractCollection<E> implements Set<E> {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean remove(Object o) {
         if (map.containsKey(o)) { // c.isInstance(o);

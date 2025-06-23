@@ -542,7 +542,6 @@ public class TreeDequeList<E> extends DequeList<E> { // apparently this is simil
         };
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected int convert(Object o) {
         TreeDequeListNode<E> i = (TreeDequeListNode<E>) o;
@@ -655,7 +654,6 @@ public class TreeDequeList<E> extends DequeList<E> { // apparently this is simil
         return ret;
     }
 
-    @SuppressWarnings("unchecked")
     private static <E> void assertDataMakesSense(TreeDequeList<E> tree) {
         int calculatedSize = 0;
         bruteForceLeftSubtree(tree.root);

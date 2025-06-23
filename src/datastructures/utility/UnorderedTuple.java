@@ -53,7 +53,6 @@ public class UnorderedTuple<E> {
         return new UnorderedTuple<E>(first, second);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         if (o == this) {

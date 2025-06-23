@@ -1,6 +1,5 @@
 package datastructures.collections.multiset;
 
-import datastructures.collections.dequelist.TreeDequeList;
 import datastructures.utility.Randomness;
 import datastructures.utility.VisualizeTree;
 import datastructures.utility.functionalinterfaces.onetoone.G2G;
@@ -364,7 +363,6 @@ public class TreeMultiSet<E> extends AbstractCollection<E> { // for multimap: ju
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public final boolean remove(Object o) {
         if (!contains(o)) {
@@ -555,7 +553,6 @@ public class TreeMultiSet<E> extends AbstractCollection<E> { // for multimap: ju
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final void clear() {
         size = 0;
         root = null;
@@ -564,7 +561,6 @@ public class TreeMultiSet<E> extends AbstractCollection<E> { // for multimap: ju
 
     @Override
     public final E[] toArray() {
-        @SuppressWarnings("unchecked")
         E[] arr = (E[]) new Object[size()]; // much more interesting imo
 
         int i = 0;

@@ -455,7 +455,6 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public final V remove(Object key) {
         throw new UnsupportedOperationException();
@@ -664,6 +663,7 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
     }
 
     public final ArrayDequeList<Integer> indicesOfValue(V value) {
+        @SuppressWarnings("rawtypes")
         ArrayDequeList<Integer> indices = new ArrayDequeList();
         for (TreeMultiMapNode<K, V> node : new TreeSet<>(backwardHashMap.get(value))) { // to ignore duplicates
             for (int subindex : node.values.indicesOf(value)) {
@@ -690,7 +690,6 @@ public class TreeMultiMap<K, V> extends AbstractMap<K, V> { // can act as priori
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final void clear() {
         size = 0;
         root = null;

@@ -1,7 +1,5 @@
 package datastructures.collections.setunion;
 
-import datastructures.collections.multiset.HashMultiSet;
-import datastructures.collections.multiset.TreeMultiSet;
 import datastructures.utility.Randomness;
 import datastructures.utility.VisualizeTree;
 

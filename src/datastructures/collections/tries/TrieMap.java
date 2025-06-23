@@ -692,10 +692,6 @@ public class TrieMap<K, V> {
         return closeValues;
     }
 
-    // TODO: support for wildcards
-    // TODO: double TrieMap (for prefix-suffix matching)
-    // TODO: TrieMap Map
-
     public void add(K[] sequence, V value) {
         add(asIterable(sequence), value);
     }

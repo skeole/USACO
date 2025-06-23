@@ -46,25 +46,58 @@ public class Template {
 
     }
 
-    public static int modsum(int... numbers) { // for modprod need to convert to longs
-        int sum = 0;
-        int modulo = 1000000007; // 10^9 + 7
-        for (int number : numbers) {
+    public final static int MODULO = 1000000007; // 10^9 + 7
+    public static final int[] MODULO_AS_BINARY = {0, 2, 9, 11, 14, 15, 17, 19, 20, 23, 24, 25, 27, 28, 29};
+
+    /** expectation: largest magnitude less than 10^9 + 7 */
+    public static long modsum(long... numbers) {
+        long sum = 0;
+        for (long number : numbers) {
             if (number < 0) {
-                number += modulo;
-            }
-            if (number < 0) {
-                number += modulo;
-            }
-            if (number >= modulo) {
-                number -= modulo;
+                number += MODULO;
             }
             sum += number;
-            if (sum > modulo) {
-                sum -= modulo;
+            if (sum >= MODULO) {
+                sum -= MODULO;
             }
         }
         return sum;
+    }
+
+    /** expectation: magnitude less than 10^9 + 7 */
+    public static long inverse(long number) {
+        if (number < 0) {
+            number += MODULO;
+        }
+
+        long result = 1;
+        long register = number;
+
+        int currentExponent = 0;
+        for (int i : MODULO_AS_BINARY) {
+            for (int exponent = currentExponent; exponent < i; exponent += 1) {
+                register = (register * register) % MODULO;
+            }
+            result = (result * register) % MODULO;
+            currentExponent = i;
+        }
+
+        return result;
+    }
+
+    /** expectation: largest magnitude less than 10^9 + 7 */
+    public static long modprod(long... numbers) {
+        long product = 1;
+        for (long number : numbers) {
+            if (number < 0) {
+                number += MODULO;
+            }
+            product *= number;
+            if (product >= MODULO) {
+                product %= MODULO;
+            }
+        }
+        return product;
     }
 
     public static final String problemName = "Problem";
