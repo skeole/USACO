@@ -2,7 +2,7 @@ package datastructures.utility;
 
 public class ModularArithmetic {
 
-    public final static int MODULO = 1000000007; // 10^9 + 7
+    public static final int MODULO = 1000000007; // 10^9 + 7
     public static final int[] MODULO_AS_BINARY = {0, 2, 9, 11, 14, 15, 17, 19, 20, 23, 24, 25, 27, 28, 29};
 
     /** expectation: largest magnitude less than 10^9 + 7 */

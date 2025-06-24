@@ -5,7 +5,7 @@ import java.util.*;
 
 public class NondecreasingSubsequences { // 2020 January Platinum 2
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException { // cuts it extremely close - around 3.7 seconds
 
         // Begin Parsing Setup
 
@@ -130,18 +130,19 @@ public class NondecreasingSubsequences { // 2020 January Platinum 2
         line = new StringTokenizer(inputReader.readLine());
         int q = Integer.parseInt(line.nextToken()); // number of entries
 
+        long[][] a, c;
+        long[] bks = new long[k];
+
         for (int i = 0; i < q; i += 1) {
             line = new StringTokenizer(inputReader.readLine());
 
             // now we have to ball based on first and second
 
-            long[][] a = startingSequences[Integer.parseInt(line.nextToken()) - 1]; // lmao
-            long[][] c = startingSequences[Integer.parseInt(line.nextToken())];
+            a = startingSequences[Integer.parseInt(line.nextToken()) - 1]; // lmao
+            c = startingSequences[Integer.parseInt(line.nextToken())];
 
             // computations we need:
                 // [4][4], [3][3] + [3][4], [2][2] + [2][3] + [2][4], [1][1] + [1][2] + [1][3] + [1][4]
-
-            long[] bks = new long[k];
 
             for (int bk = k - 1; bk >= 0; bk -= 1) {
                 /* bks[bk] * (1 + a[bk][bk]) = c[bk][bk] - a[bk][bk] +
