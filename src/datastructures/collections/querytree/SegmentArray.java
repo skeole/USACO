@@ -146,7 +146,7 @@ public class SegmentArray<E> {
 
     public static void main(String[] args) {
 
-        Integer[][] values = new Integer[2500][4]; // 2x2 matrices essentially
+        Integer[][] values = new Integer[50000][4]; // 2x2 matrices essentially
 
         for (int i = 0; i < values.length; i += 1) {
             values[i] = new Integer[] {
@@ -162,16 +162,16 @@ public class SegmentArray<E> {
                 x[0] * y[1] + x[1] * y[3],
                 x[2] * y[0] + x[3] * y[2],
                 x[2] * y[1] + x[3] * y[3]
-        }; // associative! also commutative but who gaf
+        }; // associative but not commutative :)
 
         SegmentArray<Integer[]> segmentArray = new SegmentArray<>(operator, values);
 
         for (int i = 0; i < values.length; i += 1) {
+            Integer[] bruteForced = values[i];
             for (int j = i; j < values.length; j += 1) {
                 Integer[] result = segmentArray.evaluateRange(i, j);
-                Integer[] bruteForced = values[i];
-                for (int k = i + 1; k <= j; k += 1) {
-                    bruteForced = operator.function(bruteForced, values[k]); // LMAOAOOAO MY BRUTE FORCE CODE WAS WRONG BUT THE TREE WAS CORRECT
+                if (j != i) {
+                    bruteForced = operator.function(bruteForced, values[j]);
                 }
                 if (!Arrays.equals(bruteForced, result)) {
                     throw new IllegalStateException("Segment array inconsistent");
@@ -182,7 +182,8 @@ public class SegmentArray<E> {
         System.out.println("Segment array passed all tests :)");
 
         // segment array takes virtually no time compared to brute forcing (as expected, of course)
-        // to test, take out the brute force and see how little time it takes!
+        // to test, replace O(1) amortized calculation with O(n) brute force calculation
+        // should probably also reduce the range from 50000 to something like 2500 lol
     }
     
 }
