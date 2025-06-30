@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Template {
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
 
         // Begin Parsing Input
 
@@ -30,17 +30,17 @@ public class Template {
 
         // Begin Writing Output
 
-        BufferedWriter ouputWriter = 
+        BufferedWriter outputWriter =
             submission ? 
                 (recent ? 
                     new BufferedWriter(new OutputStreamWriter(System.out)) : 
                     new BufferedWriter(new FileWriter(problemName + ".out"))) : 
                 new BufferedWriter(new FileWriter("problemdata\\output.txt"));
 
-        ouputWriter.write("HI!");
-        ouputWriter.newLine();
+        outputWriter.write("HI!");
+        outputWriter.newLine();
 
-        ouputWriter.close();
+        outputWriter.close();
 
         // Finish Writing Output
 
@@ -98,6 +98,19 @@ public class Template {
             }
         }
         return product;
+    }
+
+    /** expectation: largest magnitude less than 10^9 + 7 */
+    public static long modpow(long number, long exponent) {
+        if (exponent == 0) {
+            return 1;
+        }
+        long prev = modpow(number, exponent / 2);
+        if (exponent % 2 == 0) {
+            return modprod(prev, prev);
+        } else {
+            return modprod(number, prev, prev);
+        }
     }
 
     public static final String problemName = "Problem";
