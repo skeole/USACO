@@ -3,7 +3,7 @@ package problems.gold;
 import java.io.*;
 import java.util.*;
 
-public class OohMooMilk {
+public class OohMooMilk { // 2025 Open Gold 3
 
     public static void main(String[] args) throws IOException {
 
