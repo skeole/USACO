@@ -3,7 +3,7 @@ package problems.gold;
 import java.io.*;
 import java.util.*;
 
-public class Cowreography {
+public class Cowreography { // 2024 Open Gold 1
 
     public static class ArrayListTuple {
         public final ArrayList<Integer> first;
