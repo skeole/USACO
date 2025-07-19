@@ -39,3 +39,4 @@ Some general tips
  - To add on to that last point: binary search is overlooked
      - Example: if you want to find the largest/smallest value such that something works, or you want to find the peak of
         a wave-like function, Binary Search can be an overlooked but very powerful tool
+     - When you think you need Order-Statistic Trees, try using Binary Search if you only need the final result :)
