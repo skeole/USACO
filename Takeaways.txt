@@ -1,0 +1,41 @@
+Some general tips
+
+ - Linear transformations can be represented as matrices, which allows for them to be associatively applied
+
+ - Try to represent things on x/y axes rather than on the diagonals - can make it easier to make observations
+
+ - For DP, make an n-dimensional array where the number of discrete states you need to store is equal to n
+    - If you only need access to the last 1 or 2 layers, you don't need to store the entire dp grid - just the relevant
+        layers is enough and much better for memory and performance
+
+ - Oftentimes, 1D tricks can be extended to 2D with a bit of thoughts (ex. 1D --> 2D range sum can be done via a slight
+    modification to prefix arrays - rather than needing a difference of 2 numbers you need a difference of 4)
+    - Extension: when struggling with 2D range problems, try solving a 1D version first
+
+ - Avoid iterating over elements you know are zero, especially if they make a non-trivial portion of the array
+ 
+ - If you see you're calculating the same thing over again in different ways, that's generally a sign some optimization
+    can be made
+    - Generally some sort of caching will be a viable strategy, but divide and conquer can work as well sometimes
+
+ - To make divide and conquer easier, you can expand the data set to the next power of two, then differentiate based
+    on how the binary sequences diverge
+
+ - Sometimes, you can work backwards rather than forwards
+     - A common example is when a range of values will have the same answer; instead of solving the answer for each
+        value in the range, you can solve the range for which each specific answer works
+     - Even when the above doesn't hold it can still be a viable strategy to limit double computation
+     - Another common example is Reverse Prefix Sums: when you want to add to a range, just add +1 to the start and -1
+        after the range, then do prefix sums on that
+
+ - If you need things to be sorted, and you only need the final order (i.e. not the intermediate orderings), you can input
+    to an ArrayList then call Arrays.sort() after the fact
+     - Example: map everything to its index in a sorted array. Doing it with TreeMaps requires an augmented BST
+     - Bonus: don't need to worry about Trees eliminating duplicates
+     - Note: while putting data in a TreeSet and calling .asArray() is technically the same time complexity, my main idea
+        with this is that Arrays are a very powerful data structure
+     - You can even still search on it with binary search lol
+     
+ - To add on to that last point: binary search is overlooked
+     - Example: if you want to find the largest/smallest value such that something works, or you want to find the peak of
+        a wave-like function, Binary Search can be an overlooked but very powerful tool
