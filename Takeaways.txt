@@ -1,42 +1,90 @@
-Some general tips
-
- - Linear transformations can be represented as matrices, which allows for them to be associatively applied
-
- - Try to represent things on x/y axes rather than on the diagonals - can make it easier to make observations
+Strategies
 
  - For DP, make an n-dimensional array where the number of discrete states you need to store is equal to n
     - If you only need access to the last 1 or 2 layers, you don't need to store the entire dp grid - just the relevant
-        layers is enough and much better for memory and performance
+        layers is enough and much better for memory and performance (2020 December Gold 2, 2021 Open Platinum 3)
+    - Sometimes, you can do range dp, where 2 of the states are the starting and ending values of the range (LC 312,
+        2021 February Gold 2)
+    - If the data has many dimensions, but is extremely sparse, sometimes you can use hash DP instead (Euler 269)
+    - If you need fractional states, but know the denominator is bounded, you can have numerator as an entry and
+        let the denominator be the index (2018 Open Gold 3)
 
- - Oftentimes, 1D tricks can be extended to 2D with a bit of thoughts (ex. 1D --> 2D range sum can be done via a slight
-    modification to prefix arrays - rather than needing a difference of 2 numbers you need a difference of 4)
-    - Extension: when struggling with 2D range problems, try solving a 1D version first
+ - Greedy Algorithm: sometimes, the optimization just requires math to figure out
+    - Only do it if you can prove the greedy algorithm gives an optimal solution, as opposed to just a heuristic
+    - But sometimes, it is absolutely necessary (2019 December Silver 2, 2024 Open Gold 1, 2021 February Gold 1
+        2025 Open Gold 3... are some of my favorites)
+
+ -  Binary Search on the Answer: a very overlooked, niche solution technique.
+    - Requires two conditions
+        - (a) monotonicity : can eliminate a range of possible values given the result
+        - (b) easy to calculate the output of a value
+    - Basically, BSOTA is your friend if the only solution you can think of is just... brute forcing every single
+        possible value, then returning the one according to the problem parameters
+         - Example: finding the input that maximizes/minimizes an output
+            - For peak/valley functions. Can do if monotonicity isn't strict, but slightly harder in that case
+         - Example: finding the maximum/minimum input such that something works
+            - Note: if (a) doesn't hold, but you can still bound the answer, brute force could still be the solution lol
+    - BSOTA isn't always the only answer for BCR (sometimes, there is a legitimate optimization involving absurd data
+        structure augmentations) but it's usually way simpler to execute
+         - Example: LC 887. While the fastest solution involves reverse-calculation, you can solve it within the
+            constraints by using BSOTA. Ironically, this is an example where BSOTA is more complicated lol
+    - Sometimes, you still do need clever optimizations while calculating the output (2018 Open Gold 3)
+
+Tips
 
  - Avoid iterating over elements you know are zero, especially if they make a non-trivial portion of the array
- 
- - If you see you're calculating the same thing over again in different ways, that's generally a sign some optimization
-    can be made
+
+ - If you see you're calculating the same thing multiple times that's generally a sign some optimization exists
     - Generally some sort of caching will be a viable strategy, but divide and conquer can work as well sometimes
 
- - To make divide and conquer easier, you can expand the data set to the next power of two, then differentiate based
-    on how the binary sequences diverge
+ - Re-framing the data or question to see it from a new perspective can highlight observations
+     - Example: Try to represent things on x/y axes rather than on the diagonals (2022 Open Gold 1)
+     - Example: Literally try to visualize the data representations in your head (2025 Open Gold 2)
+     - Example: You can save bounded-denominator fractions as a state in DP (2018 Open Gold 3)
 
- - Sometimes, you can work backwards rather than forwards
-     - A common example is when a range of values will have the same answer; instead of solving the answer for each
-        value in the range, you can solve the range for which each specific answer works
-     - Even when the above doesn't hold it can still be a viable strategy to limit double computation
-     - Another common example is Reverse Prefix Sums: when you want to add to a range, just add +1 to the start and -1
-        after the range, then do prefix sums on that
+ - When faced at a crossroads between slow modification and fast access (or vice versa), you can usually bridge the two
+    by a logarithmic factor by representing the data as a tree
+     - Example: When querying for range sums, you can use a normal array (O(1) modification, O(n) access), a prefix sums
+        array (O(n) modification, O(1) access), or a segment tree (O(log n) modification and access)
 
- - If you need things to be sorted, and you only need the final order (i.e. not the intermediate orderings), you can input
-    to an ArrayList then call Arrays.sort() after the fact
-     - Example: map everything to its index in a sorted array. Doing it with TreeMaps requires an augmented BST
-     - Bonus: don't need to worry about Trees eliminating duplicates
-     - Note: while putting data in a TreeSet and calling .asArray() is technically the same time complexity, my main idea
-        with this is that Arrays are a very powerful data structure
-     - You can even still search on it with binary search lol
-     
- - To add on to that last point: binary search is overlooked
-     - Example: if you want to find the largest/smallest value such that something works, or you want to find the peak of
-        a wave-like function, Binary Search can be an overlooked but very powerful tool
-     - When you think you need Order-Statistic Trees, try using Binary Search if you only need the final result :)
+ - The above tip can also be done in reverse: if you don't need to modify data, flattening the tree (or doing something
+    else to expedite querying at the expense of modification) can be an optimization
+     - Example: convert Segment Tree to Disjoint Segment Table (2020 January Platinum 2)
+     - Example: add to array then call Arrays.sort() (2024 Open Gold 3)
+         - Added bonus of this strategy compared to Trees: can handle multiple elements, less space, faster
+         - Generally, arrays > trees if you don't need to modify the data later; arrays have lower constants and have
+            at worst the same asymptotic complexity
+             - Example: if you need the k-th smallest number from a tree... sure, you can use an augmented BST do find
+                it in O(log n) time, but (a) that's really hard to code up and (b) you can do it from the array
+                representation in O(1) time lol
+             - Binary search hella underlooked
+
+ - Sparse data should be represented as a map, rather than as an array (Euler 269)
+
+ - To simplify divide and conquer, you can expand the data set to the next power of two, then differentiate based on how
+    the binary sequences diverge (number of leading zeroes of the xor)
+     - Example: Disjoint Segment Tables/Flattened Segment Trees (2020 January Platinum 2)
+
+ - Hash Maps are OP! (LC 1)
+
+ - Meet in the Middle is a technique as well (LC 741)
+
+ - If operations are associative, and you want to execute multiple, you can simulate executing several at once if they
+    are guaranteed to be paired together; a common example would be buying and selling (LC 502, 2025 Open Gold 3)
+     - In that case, you would store the profit expected from a move, rather than both the buy and sell prices
+     - Note: this is not necessarily always the way to go (LC 188)
+
+Observations
+
+ - Linear transformations can be represented as matrices, which allows for them to be associatively applied
+     - Either as segment trees, or (if the matrices are invertible) as prefix products (2020 January Platinum 2)
+
+ - Oftentimes, tricks from simpler problems can be easily modified to solve harder problems
+     - When struggling with high-complexity problems, try solving a simplified version first (2021 February Gold 1)
+     - Example: 1D range sum can be extended to 2D via a slight modification to prefix arrays (2021 Open Platinum 3)
+
+ - If working forwards is difficult, try working backwards!
+     - Example: if a range of values has the same answer, solve for the start and end of the range rather than for
+        every value in between (LC 887, 2022 February Gold 2)
+     - Example: Reverse Prefix Sums (2024 Open Silver 3)
+     - See also: Binary Search on the Answer

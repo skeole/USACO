@@ -701,7 +701,16 @@ public class Trie<E> {
             }
         }
 
-        System.out.println(trie.allCloseSequencesWithPrefix(asIterable("$CGT".toCharArray()), 1));
+        System.out.println(trie.visualization());
+
+        StringBuilder sb = new StringBuilder();
+        for (ArrayDeque<Character> closeSequence : trie.allCloseSequencesWithPrefix(asIterable("$CGT".toCharArray()), 1)) {
+            sb.append(',').append(' ');
+            for (char c : closeSequence) {
+                sb.append(c);
+            }
+        }
+        System.out.println("Close sequences: " + sb.delete(0, 2));
 
         System.out.println("Passed mutation-checking test");
 
